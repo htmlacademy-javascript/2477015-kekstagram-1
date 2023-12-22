@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
-* Студент: [Елизавета Румянцева](https://up.htmlacademy.ru/javascript-individual/1/user/2477015).
-* Наставник: `Неизвестно`.
+- Студент: [Елизавета Румянцева](https://up.htmlacademy.ru/javascript-individual/1/user/2477015).
+- Наставник: `Андрей Устименко`.
 
 ---
 

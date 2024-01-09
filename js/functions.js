@@ -1,11 +1,11 @@
 // ТЗ №1: Функция для проверки, является ли строка палиндромом
 
 function isPalindrome(value) {
-  const result = value.replaceAll(' ', '').toLowerCase();
-  const halflength = Math.floor(value.length / 2);
+  const pureLoweCaseStr = value.replaceAll(' ', '').toLowerCase();
+  const halfLength = Math.floor(value.length / 2);
 
-  for (let i = 0; i < halflength; ++i) {
-    if (result[i] !== result[result.length - 1 - i]) {
+  for (let i = 0; i < halfLength; ++i) {
+    if (pureLoweCaseStr[i] !== pureLoweCaseStr.at(-i - 1)) {
       return false;
     }
   }
@@ -25,13 +25,8 @@ isPalindrome('123654321'); // false
 
 // ТЗ №2: Функция, которая принимает строку, извлекает в ней цифры от 0 до 9 и возвращает их в виде целого положительного числа. Если в строке нет ни одной цифры, функция должна вернуть NaN
 
-const extractNumbers = (value) => {
-  const result = Number
-    .parseInt(value.toString()
-      .replaceAll(/[^0-9]/g, ''), 10);
-
-  return result;
-};
+const extractNumbers = (value) =>
+  Number.parseInt(value.toString().replaceAll(/[^0-9]/g, ''), 10);
 
 extractNumbers('2023 год'); // 2023
 extractNumbers('ECMAScript 2022'); // 2022
@@ -51,16 +46,11 @@ extractNumbers(1.5); //15
 	2. И возвращает исходную строку, дополненную указанными символами до заданной длины.
 */
 
-const toAddSymbols = (value, maxLength, addValue) => {
-  const minLength = maxLength - value.length;
-
-  const result = (minLength <= 0) ? value :
-    addValue.slice(0, minLength % addValue.length) +
-    addValue.repeat(minLength / addValue.length) +
+const toAddSymbols = (value, maxLength, addValue) =>
+  ((maxLength - value.length) <= 0) ? value :
+    addValue.slice(0, (maxLength - value.length) % addValue.length) +
+    addValue.repeat((maxLength - value.length) / addValue.length) +
     value;
-
-  return result;
-};
 
 toAddSymbols('1', 2, '0'); // '01'
 toAddSymbols('1', 4, '0'); // '0001'
@@ -70,11 +60,8 @@ toAddSymbols('qwerty', 4, '0'); // 'qwerty'
 
 // ТЗ №3: Функция для проверки длины строки
 
-const validateStrLength = (value, maxLength) => {
-  const result = value.length <= maxLength;
-
-  return result;
-};
+const validateStrLength = (value, maxLength) =>
+  value.length <= maxLength;
 
 validateStrLength('проверяемая строка', 20); // true
 validateStrLength('проверяемая строка', 18); // true

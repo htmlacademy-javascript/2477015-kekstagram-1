@@ -1,6 +1,6 @@
 // ТЗ №1: Функция для проверки, является ли строка палиндромом
 
-function isPalindrome(value) {
+const isPalindrome = (value) => {
   const pureLoweCaseStr = value.replaceAll(' ', '').toLowerCase();
   const halfLength = Math.floor(value.length / 2);
 
@@ -11,7 +11,7 @@ function isPalindrome(value) {
   }
 
   return true;
-}
+};
 
 isPalindrome('топот'); // true
 isPalindrome('ДовОд'); // true
@@ -46,17 +46,22 @@ extractNumbers(1.5); //15
 	2. И возвращает исходную строку, дополненную указанными символами до заданной длины.
 */
 
-const toAddSymbols = (value, maxLength, addValue) =>
-  ((maxLength - value.length) <= 0) ? value :
-    addValue.slice(0, (maxLength - value.length) % addValue.length) +
-    addValue.repeat((maxLength - value.length) / addValue.length) +
-    value;
+const toAddSymbols = (value, maxLength, addValue) => {
+  const minLength = maxLength - value.length;
+  if (minLength <= 0) {
+    return value;
+  }
+  return addValue.slice(0, minLength % addValue.length) +
+      addValue.repeat(minLength / addValue.length) +
+      value;
+};
 
 toAddSymbols('1', 2, '0'); // '01'
 toAddSymbols('1', 4, '0'); // '0001'
 toAddSymbols('q', 4, 'werty'); // 'werq'
 toAddSymbols('q', 4, 'we'); // 'wweq'
 toAddSymbols('qwerty', 4, '0'); // 'qwerty'
+toAddSymbols('fqthrth', 15, '7878787555'); // 'wweq'
 
 // ТЗ №3: Функция для проверки длины строки
 

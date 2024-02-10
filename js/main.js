@@ -1,4 +1,6 @@
 import './functions.js';
 import {createGallery} from './data.js';
+import {createMiniatures} from './create-miniatures.js';
 
-createGallery();
+
+createMiniatures(createGallery());

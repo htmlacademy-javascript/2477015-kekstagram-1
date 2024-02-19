@@ -1,3 +1,5 @@
+import {showBigPicture} from './big-picture.js';
+
 const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
@@ -10,6 +12,9 @@ const createPicture = (picture) => {
   clonePicture.querySelector('.picture__comments').textContent = picture.comments.length;
   clonePicture.querySelector('.picture__img').src = picture.url;
   clonePicture.querySelector('.picture__img').alt = picture.description;
+  clonePicture.addEventListener('click', () => {
+    showBigPicture(picture);
+  });
 
   return clonePicture;
 };

@@ -1,30 +1,20 @@
 import {showBigPicture} from './big-picture.js';
+import {renderGallery} from './render-gallery.js';
 
-const pictureTemplate = document.querySelector('#picture')
-  .content
-  .querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');
 
-const createPicture = (picture) => {
-  const clonePicture = pictureTemplate.cloneNode(true);
+export const renderPicturesGallery = (pictures) => {
+  picturesContainer.addEventListener('click', (evt) => {
+    const picture = evt.target.closest('[data-picture-id]');
 
-  clonePicture.querySelector('.picture__likes').textContent = picture.likes;
-  clonePicture.querySelector('.picture__comments').textContent = picture.comments.length;
-  clonePicture.querySelector('.picture__img').src = picture.url;
-  clonePicture.querySelector('.picture__img').alt = picture.description;
-  clonePicture.addEventListener('click', () => {
-    showBigPicture(picture);
+    if (!picture) {
+      return;
+    }
+    evt.preventDefault();
+    const photo = pictures
+      .find((elem) => elem.id === Number(picture.dataset.pictureId));
+    showBigPicture(photo);
   });
 
-  return clonePicture;
-};
-
-export const renderGallery = (pictures) => {
-  const picturesFragment = document.createDocumentFragment();
-
-  pictures.forEach((picture) => {
-    picturesFragment.append(createPicture(picture));
-  });
-
-  picturesContainer.append(picturesFragment);
+  renderGallery(pictures);
 };

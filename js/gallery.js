@@ -10,10 +10,14 @@ export const renderPicturesGallery = (pictures) => {
     if (!picture) {
       return;
     }
+
     evt.preventDefault();
-    const photo = pictures
-      .find((elem) => elem.id === Number(picture.dataset.pictureId));
-    showBigPicture(photo);
+
+    if (picture.id !== undefined) {
+      const photo = pictures
+        .find((elem) => elem.id === Number(picture.dataset.pictureId));
+      showBigPicture(photo);
+    }
   });
 
   renderGallery(pictures);

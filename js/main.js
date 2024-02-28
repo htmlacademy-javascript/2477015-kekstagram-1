@@ -1,5 +1,8 @@
 import './functions.js';
+import './big-picture.js';
+import './render-gallery.js';
 import {createGallery} from './data.js';
-import {renderGallery} from './render-gallery.js';
+import {renderPicturesGallery} from './gallery.js';
 
-renderGallery(createGallery());
+renderPicturesGallery(createGallery());
+

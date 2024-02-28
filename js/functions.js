@@ -21,7 +21,6 @@ isPalindrome('123321');
 isPalindrome('rtrc');
 isPalindrome('123654321');
 
-
 const extractNumbers = (value) =>
   Number.parseInt(value.toString().replaceAll(/[^0-9]/g, ''), 10);
 
@@ -33,7 +32,6 @@ extractNumbers('а я томат');
 extractNumbers(2023);
 extractNumbers(-1);
 extractNumbers(1.5);
-
 
 const toAddSymbols = (value, maxLength, addValue) => {
   const minLength = maxLength - value.length;
@@ -51,7 +49,6 @@ toAddSymbols('q', 4, 'werty');
 toAddSymbols('q', 4, 'we');
 toAddSymbols('qwerty', 4, '0');
 toAddSymbols('fqthrth', 15, '7878787555');
-
 
 const validateStrLength = (value, maxLength) =>
   value.length <= maxLength;

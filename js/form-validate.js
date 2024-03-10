@@ -1,13 +1,11 @@
+const MAX_COMMENT_LENGTH = 140;
+const MAX_HASHTAG_AMOUNT = 5;
+const VALID_HASHTAG_SYMBOLS = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/i;
+
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadText = imgUploadForm.querySelector('.img-upload__text');
 const textHashtags = imgUploadText.querySelector('.text__hashtags');
 const textDescription = imgUploadForm.querySelector('.text__description');
-
-const MAX_COMMENT_LENGTH = 140;
-const MAX_HASHTAG_LENGTH = 20;
-const MAX_AMOUNT_HASHTAG = 5;
-const VALID_HASHTAG_SYMBOLS = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/i;
-
 
 export const pristineForm = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -15,60 +13,36 @@ export const pristineForm = new Pristine(imgUploadForm, {
   errorTextClass:'img-upload__field-wrapper__error',
 });
 
-const getNormalizeHashtags = () =>
-  textHashtags.value
+const isValidAmountTags = (normHashtags) => normHashtags.length <= MAX_HASHTAG_AMOUNT;
+
+const uniqueHashtags = (normHashtags) => {
+  const hashtags = new Set(normHashtags);
+
+  return hashtags.size === normHashtags.length;
+};
+
+const isValidTags = (normHashtags) => normHashtags.every((tag) => VALID_HASHTAG_SYMBOLS.test(tag));
+
+const normalizedHashtags = (value) => {
+  const normHashtags = value
     .trim()
     .toLowerCase()
-    .split(' ')
-    .filter((tag) => tag === '#');
-
-
-const hasValidAmountTags = (value) => getNormalizeHashtags(value).length <= MAX_AMOUNT_HASHTAG;
-
-const hasValidComment = (value) => textDescription(value).length <= MAX_COMMENT_LENGTH;
-
-const hasValidHashtags = (value) => textHashtags(value).length <= MAX_HASHTAG_LENGTH;
-
-const hasUniqueHashtags = () => {
-  const hashtags = getNormalizeHashtags();
-  const newHashtags = new Set(hashtags);
-
-  return newHashtags.size === hashtags.length;
+    .split(/\s+/);
+  return isValidTags(normHashtags) && isValidAmountTags(normHashtags) && uniqueHashtags(normHashtags);
 };
 
-const hasValidTags = (value) => getNormalizeHashtags(value).every((tag) => VALID_HASHTAG_SYMBOLS.test(tag));
+pristineForm.addValidator(
+  textHashtags,
+  normalizedHashtags,
+  'Ошибка! Неверный формат хэш-тегов!');
 
-export const getValidForm = () => {
 
-  pristineForm.addValidator(
-    textDescription,
-    hasValidComment,
-    `Ошибка! Длина комментария не более ${MAX_COMMENT_LENGTH} символов!`);
+const isValidComment = () => textDescription
+  .value
+  .length <= MAX_COMMENT_LENGTH;
 
-  pristineForm.addValidator(
-    textHashtags,
-    hasValidHashtags,
-    `Ошибка! Длина хэш-тега не более ${MAX_HASHTAG_LENGTH} символов!`);
-
-  pristineForm.addValidator(
-    textHashtags,
-    hasValidTags,
-    'Ошибка! Неверный формат хэш-тегов!');
-
-  pristineForm.addValidator(
-    textHashtags,
-    hasValidAmountTags,
-    `Ошибка! Не более ${MAX_AMOUNT_HASHTAG} хэш-тегов!`);
-
-  pristineForm.addValidator(
-    textHashtags,
-    hasUniqueHashtags,
-    'Ошибка! один и тот же хэш-тег не может быть использован повторно!');
-
-  imgUploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    pristineForm.validate();
-  });
-};
-
+pristineForm.addValidator(
+  textDescription,
+  isValidComment,
+  `Ошибка! Длина комментария не более ${MAX_COMMENT_LENGTH} символов!`);
 

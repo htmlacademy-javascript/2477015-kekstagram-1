@@ -7,42 +7,42 @@ const imgUploadText = imgUploadForm.querySelector('.img-upload__text');
 const textHashtags = imgUploadText.querySelector('.text__hashtags');
 const textDescription = imgUploadForm.querySelector('.text__description');
 
-export const pristineForm = new Pristine(imgUploadForm, {
+const pristineForm = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass:'img-upload__field-wrapper__error',
 });
 
-const isValidAmountTags = (normHashtags) => normHashtags.length <= MAX_HASHTAG_AMOUNT;
+export const pristineFormValid = () => pristineForm.validate();
+export const pristineFormReset = () => pristineForm.reset();
 
-const uniqueHashtags = (normHashtags) => {
-  const hashtags = new Set(normHashtags);
+const isValidAmountTags = (hashtags) => hashtags.length <= MAX_HASHTAG_AMOUNT;
 
-  return hashtags.size === normHashtags.length;
-};
+const isTagsUnique = (hashtags) => new Set(hashtags).size === hashtags.length;
 
-const isValidTags = (normHashtags) => normHashtags.every((tag) => VALID_HASHTAG_SYMBOLS.test(tag));
+const isTagsValid = (hashtags) => hashtags.every((tag) => VALID_HASHTAG_SYMBOLS.test(tag));
 
-const normalizedHashtags = (value) => {
-  const normHashtags = value
+const normalizedTags = (value) => {
+  const hashtags = value
     .trim()
     .toLowerCase()
     .split(/\s+/);
-  return isValidTags(normHashtags) && isValidAmountTags(normHashtags) && uniqueHashtags(normHashtags);
+
+  return isTagsValid(hashtags)
+  && isValidAmountTags(hashtags)
+  && isTagsUnique(hashtags);
 };
 
 pristineForm.addValidator(
   textHashtags,
-  normalizedHashtags,
+  normalizedTags,
   'Ошибка! Неверный формат хэш-тегов!');
 
 
-const isValidComment = () => textDescription
-  .value
-  .length <= MAX_COMMENT_LENGTH;
+const isCommentValid = () => textDescription.value.length <= MAX_COMMENT_LENGTH;
 
 pristineForm.addValidator(
   textDescription,
-  isValidComment,
+  isCommentValid,
   `Ошибка! Длина комментария не более ${MAX_COMMENT_LENGTH} символов!`);
 

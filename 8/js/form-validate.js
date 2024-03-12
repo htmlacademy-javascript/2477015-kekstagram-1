@@ -7,14 +7,14 @@ const imgUploadText = imgUploadForm.querySelector('.img-upload__text');
 const textHashtags = imgUploadText.querySelector('.text__hashtags');
 const textDescription = imgUploadForm.querySelector('.text__description');
 
-const pristineForm = new Pristine(imgUploadForm, {
+const validation = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass:'img-upload__field-wrapper__error',
 });
 
-export const pristineFormValid = () => pristineForm.validate();
-export const pristineFormReset = () => pristineForm.reset();
+export const isFormValid = () => validation.validate();
+export const resetValidation = () => validation.reset();
 
 const isValidAmountTags = (hashtags) => hashtags.length <= MAX_HASHTAG_AMOUNT;
 
@@ -22,27 +22,24 @@ const isTagsUnique = (hashtags) => new Set(hashtags).size === hashtags.length;
 
 const isTagsValid = (hashtags) => hashtags.every((tag) => VALID_HASHTAG_SYMBOLS.test(tag));
 
-const normalizedTags = (value) => {
+const isTagFieldValid = (value) => {
   const hashtags = value
     .trim()
     .toLowerCase()
     .split(/\s+/);
 
-  return isTagsValid(hashtags)
-  && isValidAmountTags(hashtags)
-  && isTagsUnique(hashtags);
+  return isTagsValid(hashtags) && isValidAmountTags(hashtags) && isTagsUnique(hashtags);
 };
 
-pristineForm.addValidator(
+validation.addValidator(
   textHashtags,
-  normalizedTags,
+  isTagFieldValid,
   'Ошибка! Неверный формат хэш-тегов!');
 
 
 const isCommentValid = () => textDescription.value.length <= MAX_COMMENT_LENGTH;
 
-pristineForm.addValidator(
+validation.addValidator(
   textDescription,
   isCommentValid,
   `Ошибка! Длина комментария не более ${MAX_COMMENT_LENGTH} символов!`);
-

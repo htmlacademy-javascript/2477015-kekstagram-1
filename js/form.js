@@ -1,5 +1,5 @@
 import {isEscapeKey} from './util.js';
-import {pristineFormValid, pristineFormReset} from './form-validate.js';
+import {isFormValid, resetValidation} from './form-validate.js';
 
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
@@ -10,7 +10,7 @@ const textDescription = imgUploadForm.querySelector('.text__description');
 
 const closeForm = () => {
   imgUploadForm.reset();
-  pristineFormReset();
+  resetValidation();
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onFormKeydown);
@@ -41,13 +41,10 @@ function onFormKeydown (evt) {
   }
 }
 
-export const onUploadPicture = () => {
-  imgUploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    pristineFormValid();
-  });
+imgUploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  isFormValid();
+});
 
-  imgUploadCancel.addEventListener('click', onCancelButtonClick);
-
-  imgUploadInput.addEventListener('change', onInputChange);
-};
+imgUploadCancel.addEventListener('click', onCancelButtonClick);
+imgUploadInput.addEventListener('change', onInputChange);

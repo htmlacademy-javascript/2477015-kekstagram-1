@@ -1,4 +1,4 @@
-const EFFECTS = {
+const FILTERS = {
   origin: {
     filter: 'none',
     unit: '',
@@ -62,30 +62,25 @@ const effectsList = imgUploadForm.querySelector('.effects__list');
 const effectLevelValue = imgUploadForm.querySelector('.effect-level__value');
 const effectLevelSlider = imgUploadForm.querySelector('.effect-level__slider');
 
-
-const currentEffect = {
+const activeFilter = {
   filter: '',
   unit: '',
 };
 
-const chosenEffect = EFFECTS.origin;
-
-const isOrigin = () => chosenEffect === EFFECTS.origin;
-
 noUiSlider.create(effectLevelSlider, {
   range: {
-    min: EFFECTS.origin.min,
-    max: EFFECTS.origin.max,
+    min: FILTERS.origin.min,
+    max: FILTERS.origin.max,
   },
-  start:  EFFECTS.origin.start,
-  step:  EFFECTS.origin.step,
-  connect: EFFECTS.origin.connect,
+  start:  FILTERS.origin.start,
+  step:  FILTERS.origin.step,
+  connect: FILTERS.origin.connect,
 });
 
 const setEffectPicture = () => {
-  effectLevelValue.value = effectLevelSlider.noUiSlider.get();
+  activeFilter.value = effectLevelSlider.noUiSlider.get();
   imgUploadPreview.style.filter =
-  `${currentEffect.filter}(${effectLevelValue.value}${currentEffect.unit})`;
+  `${activeFilter.filter}(${effectLevelValue.value}${activeFilter.unit})`;
 };
 
 const updateSliderOptions = ({ min, max, start, step, connect}) => {
@@ -100,25 +95,22 @@ const updateSliderOptions = ({ min, max, start, step, connect}) => {
   });
 };
 
-export const resetEffectPicture = () => {
-  if (isOrigin) {
-    imgUploadEffectLevel.classList.add('hidden');
-    imgUploadPreview.style.filter = '';
-    effectLevelValue.value = '';
-  }
+export const resetPictureEffect = () => {
+  imgUploadEffectLevel.classList.add('hidden');
+  imgUploadPreview.style.filter = '';
+  effectLevelValue.value = '';
 };
 
 effectsList.addEventListener('click', (evt) => {
   const effect = evt.target.closest('.effects__radio');
 
-  if (evt.target.value === EFFECTS.origin.filter) {
-    resetEffectPicture();
-
+  if (evt.target.value === FILTERS.origin.filter) {
+    resetPictureEffect();
   } else {
     imgUploadEffectLevel.classList.remove('hidden');
-    currentEffect.unit = EFFECTS[effect.value].unit;
-    currentEffect.filter = EFFECTS[effect.value].filter;
-    updateSliderOptions(EFFECTS[effect.value]);
+    activeFilter.unit = FILTERS[effect.value].unit;
+    activeFilter.filter = FILTERS[effect.value].filter;
+    updateSliderOptions(FILTERS[effect.value]);
   }
 });
 

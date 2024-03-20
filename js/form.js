@@ -1,5 +1,7 @@
 import {isEscapeKey} from './util.js';
 import {isFormValid, resetValidation} from './form-validate.js';
+import {resetScalePicture} from './scale-picture.js';
+import {resetEffectPicture} from './effects-picture.js';
 
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
@@ -11,6 +13,8 @@ const textDescription = imgUploadForm.querySelector('.text__description');
 const closeForm = () => {
   imgUploadForm.reset();
   resetValidation();
+  resetScalePicture();
+  resetEffectPicture();
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onFormKeydown);
@@ -37,7 +41,7 @@ const isInputInFocus = () =>
 function onFormKeydown (evt) {
   if (isEscapeKey(evt.key) && !isInputInFocus()) {
     evt.preventDefault();
-    onCancelButtonClick();
+    closeForm();
   }
 }
 

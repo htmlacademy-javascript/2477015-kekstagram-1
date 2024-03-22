@@ -62,10 +62,7 @@ const effectsList = imgUploadForm.querySelector('.effects__list');
 const effectLevelValue = imgUploadForm.querySelector('.effect-level__value');
 const effectLevelSlider = imgUploadForm.querySelector('.effect-level__slider');
 
-const activeFilter = {
-  filter: '',
-  unit: '',
-};
+let activeFilter = FILTERS.origin;
 
 noUiSlider.create(effectLevelSlider, {
   range: {
@@ -77,8 +74,8 @@ noUiSlider.create(effectLevelSlider, {
   connect: FILTERS.origin.connect,
 });
 
-const setEffectPicture = () => {
-  activeFilter.value = effectLevelSlider.noUiSlider.get();
+const setPictureEffect = () => {
+  effectLevelValue.value = effectLevelSlider.noUiSlider.get();
   imgUploadPreview.style.filter =
   `${activeFilter.filter}(${effectLevelValue.value}${activeFilter.unit})`;
 };
@@ -101,17 +98,17 @@ export const resetPictureEffect = () => {
   effectLevelValue.value = '';
 };
 
-effectsList.addEventListener('click', (evt) => {
-  const effect = evt.target.closest('.effects__radio');
+effectsList.addEventListener('change', (evt) => {
+  activeFilter = FILTERS[evt.target.value];
 
-  if (evt.target.value === FILTERS.origin.filter) {
-    resetPictureEffect();
-  } else {
-    imgUploadEffectLevel.classList.remove('hidden');
-    activeFilter.unit = FILTERS[effect.value].unit;
-    activeFilter.filter = FILTERS[effect.value].filter;
-    updateSliderOptions(FILTERS[effect.value]);
+  if (evt.target.type === 'radio') {
+    if (evt.target.value === 'none') {
+      resetPictureEffect();
+    } else {
+      imgUploadEffectLevel.classList.remove('hidden');
+      updateSliderOptions(activeFilter);
+    }
   }
 });
 
-effectLevelSlider.noUiSlider.on('update', setEffectPicture);
+effectLevelSlider.noUiSlider.on('update', setPictureEffect);

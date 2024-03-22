@@ -8,21 +8,35 @@ const biggerControlButton = imgUploadForm.querySelector('.scale__control--bigger
 const scaleControlValue = imgUploadForm.querySelector('.scale__control--value');
 const imgUploadPreview = imgUploadForm.querySelector('.img-upload__preview');
 
+let getScaleValue = parseInt(scaleControlValue.value, 10);
+
 const setPictureScale = (value) => {
   imgUploadPreview.style.transform = `scale(${value / 100})`;
   scaleControlValue.value = `${value}%`;
 };
 
-export const resetScalePicture = () => setPictureScale(MAX_SCALE);
-
 const onSmallerControlButtonClick = () => {
+  if(getScaleValue <= MIN_SCALE) {
+    return;
+  }
+
   setPictureScale(
-    Math.max (parseInt(scaleControlValue.value, 10) - SCALE_STEP, MIN_SCALE));
+    Math.max (getScaleValue -= SCALE_STEP, MIN_SCALE));
 };
 
 const onBiggerControlButtonClick = () => {
+  if(getScaleValue >= MAX_SCALE) {
+    return;
+  }
+
   setPictureScale(
-    Math.min (parseInt(scaleControlValue.value, 10) + SCALE_STEP, MAX_SCALE));
+    Math.min ((getScaleValue += SCALE_STEP), MAX_SCALE));
+};
+
+export const resetScalePicture = () => {
+  getScaleValue = MAX_SCALE;
+  setPictureScale(getScaleValue);
+
 };
 
 smallerControlButton.addEventListener('click', onSmallerControlButtonClick);

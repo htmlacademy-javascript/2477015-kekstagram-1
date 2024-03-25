@@ -20,7 +20,7 @@ const onSmallerControlButtonClick = () => {
     return;
   }
 
-  setPictureScale(Math.max (getScaleValue -= SCALE_STEP, MIN_SCALE));
+  setPictureScale(Math.max(getScaleValue -= SCALE_STEP, MIN_SCALE));
 };
 
 const onBiggerControlButtonClick = () => {
@@ -28,7 +28,7 @@ const onBiggerControlButtonClick = () => {
     return;
   }
 
-  setPictureScale(Math.min ((getScaleValue += SCALE_STEP), MAX_SCALE));
+  setPictureScale(Math.min((getScaleValue += SCALE_STEP), MAX_SCALE));
 };
 
 export const resetScalePicture = () => {

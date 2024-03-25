@@ -93,6 +93,7 @@ const updateSliderOptions = ({ min, max, start, step, connect}) => {
 };
 
 export const resetPictureEffect = () => {
+  activeFilter = FILTERS.origin;
   imgUploadEffectLevel.classList.add('hidden');
   imgUploadPreview.style.filter = '';
   effectLevelValue.value = '';

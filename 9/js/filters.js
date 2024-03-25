@@ -99,15 +99,13 @@ export const resetPictureEffect = () => {
 };
 
 effectsList.addEventListener('change', (evt) => {
-  activeFilter = FILTERS[evt.target.value];
+  activeFilter = FILTERS[evt.target.value] ?? FILTERS.origin;
 
-  if (evt.target.type === 'radio') {
-    if (evt.target.value === 'none') {
-      resetPictureEffect();
-    } else {
-      imgUploadEffectLevel.classList.remove('hidden');
-      updateSliderOptions(activeFilter);
-    }
+  if (activeFilter === FILTERS.origin) {
+    resetPictureEffect();
+  } else {
+    imgUploadEffectLevel.classList.remove('hidden');
+    updateSliderOptions(activeFilter);
   }
 });
 

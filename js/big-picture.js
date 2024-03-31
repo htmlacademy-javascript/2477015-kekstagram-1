@@ -1,11 +1,11 @@
 import {isEscapeKey} from './util.js';
 
 const SHOWN_COMMENTS_STEP = 5;
+
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 const socialCommentCount = bigPicture.querySelector('.social__comment-count');
 const shownCommentsCount = bigPicture.querySelector('.shown-comments-count');
-const totalCommentsCount = bigPicture.querySelector('.comment-total-count');
 const socialComments = bigPicture.querySelector('.social__comments');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
 const commentTemplate = document.querySelector('#comment')
@@ -43,7 +43,6 @@ const renderComments = () => {
   socialComments.innerHTML = '';
   socialComments.append(fragmentComment);
   shownCommentsCount.textContent = shownComments;
-  totalCommentsCount.textContent = socialComments.length;
 };
 
 const renderBigPicture = (picture) => {
@@ -58,6 +57,8 @@ const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onBigPictureKeydown);
+  shownComments = 0;
+  socialComment = [];
 };
 
 bigPictureCancel.addEventListener('click', () => {
@@ -76,7 +77,6 @@ function onBigPictureKeydown (evt) {
 }
 
 export const showBigPicture = (photo) => {
-  shownComments = 0;
   bigPicture.classList.remove('hidden');
   socialCommentCount.classList.remove('hidden');
   commentsLoader.classList.remove('hidden');
@@ -85,8 +85,8 @@ export const showBigPicture = (photo) => {
 
   renderBigPicture(photo);
 
-  socialComment = photo.comments;
-  if (socialComment.length > 0) {
+  if (socialComment.length >= 0) {
+    socialComment = photo.comments;
     renderComments();
   }
 };

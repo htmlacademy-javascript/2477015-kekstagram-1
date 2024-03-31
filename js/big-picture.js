@@ -1,8 +1,11 @@
 import {isEscapeKey} from './util.js';
 
+const SHOWN_COMMENTS_STEP = 5;
+
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 const socialCommentCount = bigPicture.querySelector('.social__comment-count');
+const shownCommentsCount = bigPicture.querySelector('.shown-comments-count');
 const socialComments = bigPicture.querySelector('.social__comments');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
 const commentTemplate = document.querySelector('#comment')
@@ -18,16 +21,28 @@ const createComment = (data) => {
   return comment;
 };
 
-const renderComments = (comments) => {
-  socialComments.innerHTML = '';
+let shownComments = 0;
+let socialComment = [];
+
+const renderComments = () => {
+  shownComments += SHOWN_COMMENTS_STEP;
+
+  if (shownComments >= socialComment.length) {
+    commentsLoader.classList.add('hidden');
+    shownComments = socialComment.length;
+  } else {
+    commentsLoader.classList.remove('hidden');
+  }
 
   const fragmentComment = document.createDocumentFragment();
-  comments.forEach((data) => {
-    const commentElement = createComment(data);
-    fragmentComment.append(commentElement);
-  });
 
+  for (let i = 0; i < shownComments; i++) {
+    fragmentComment.append(createComment(socialComment[i]));
+  }
+
+  socialComments.innerHTML = '';
   socialComments.append(fragmentComment);
+  shownCommentsCount.textContent = shownComments;
 };
 
 const renderBigPicture = (picture) => {
@@ -42,10 +57,16 @@ const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onBigPictureKeydown);
+  shownComments = 0;
+  socialComment = [];
 };
 
 bigPictureCancel.addEventListener('click', () => {
   closeBigPicture();
+});
+
+commentsLoader.addEventListener('click', () => {
+  renderComments();
 });
 
 function onBigPictureKeydown (evt) {
@@ -63,5 +84,9 @@ export const showBigPicture = (photo) => {
   document.addEventListener('keydown', onBigPictureKeydown);
 
   renderBigPicture(photo);
-  renderComments(photo.comments);
+
+  if (socialComment.length >= 0) {
+    socialComment = photo.comments;
+    renderComments();
+  }
 };

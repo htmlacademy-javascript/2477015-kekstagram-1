@@ -36,7 +36,7 @@ const onBiggerControlButtonClick = () => {
 };
 
 export const resetScalePicture = () => {
-  setPictureScale(getScaleValue());
+  setPictureScale(MAX_SCALE);
 };
 
 smallerControlButton.addEventListener('click', onSmallerControlButtonClick);

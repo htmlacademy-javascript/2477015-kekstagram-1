@@ -1,5 +1,6 @@
+const BASE_URL = 'https://28.javascript.htmlacademy.pro/kekstagram';
+
 const Route = {
-  BASE_URL: 'https://28.javascript.htmlacademy.pro/kekstagram',
   GET_DATA: '/data',
   SEND_DATA: '/',
 };
@@ -13,7 +14,7 @@ const ErrorText = {
 };
 
 const load = (route, errorText, method = Method.GET, body = null) =>
-  fetch(`${Route.BASE_URL}${route}`, {method, body})
+  fetch(`${BASE_URL}${route}`, {method, body})
     .then((response) => {
       if (!response.ok) {
         throw new Error(`Ошибка ${response.status}: ${response.statusText}`);
@@ -24,6 +25,6 @@ const load = (route, errorText, method = Method.GET, body = null) =>
       throw new Error(errorText ?? err.message);
     });
 
-export const getPictures = () => load(Route.GET_DATA, ErrorText.GET_DATA);
+export const getPicture = () => load(Route.GET_DATA, ErrorText.GET_DATA);
 
-export const sendPictures = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
+export const sendPicture = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);

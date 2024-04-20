@@ -3,7 +3,7 @@ import {isFormValid, resetValidation} from './form-validate.js';
 import {resetScalePicture} from './picture-scale.js';
 import {resetPictureEffect} from './filters.js';
 import {sendPicture} from './api.js';
-import {showSuccessMessage, showErrorMessage} from './dialogs.js';
+import {showDialog} from './dialogs.js';
 
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
@@ -15,7 +15,14 @@ const submitButton = imgUploadForm.querySelector('.img-upload__submit');
 
 const SubmitButtonText = {
   DEFAULT: 'Опубликовать',
-  POST: 'Отправляю...'
+  POST: 'Публикую...'
+};
+
+const switchSubmitButton = (isDisabled) => {
+  submitButton.disabled = isDisabled;
+  submitButton.textContent = isDisabled
+    ? SubmitButtonText.POST
+    : SubmitButtonText.DEFAULT;
 };
 
 export const closeForm = () => {
@@ -23,6 +30,7 @@ export const closeForm = () => {
   resetValidation();
   resetScalePicture();
   resetPictureEffect();
+  switchSubmitButton(false);
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onFormKeydown);
@@ -54,35 +62,22 @@ function onFormKeydown (evt) {
   }
 }
 
-const switchSubmitButton = (isDisabled) => {
-  submitButton.disabled = isDisabled;
-
-  if (isDisabled) {
-    submitButton.textContent = SubmitButtonText.POST;
-  } else {
-    submitButton.textContent = SubmitButtonText.DEFAULT;
-  }
-};
-
 imgUploadCancel.addEventListener('click', onCancelButtonClick);
 imgUploadInput.addEventListener('change', onInputChange);
 
 const setUserFormSubmit = (evt) => {
   evt.preventDefault();
-
   if (isFormValid) {
     switchSubmitButton(true);
     sendPicture(new FormData(evt.target))
       .then(() => {
         closeForm();
-        showSuccessMessage();
+        showDialog('success');
       })
-      .catch(
-        (err) => {
-          showErrorMessage(err.message);
-        }
-      )
-      .finally(() => switchSubmitButton(false));
+      .catch(() => {
+        switchSubmitButton(false);
+        showDialog('error');
+      });
   }
 };
 

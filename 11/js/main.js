@@ -7,10 +7,10 @@ import './picture-scale.js';
 import './filters.js';
 //import {createGallery} from './data.js';
 import {renderPicturesGallery} from './gallery.js';
-import {getPicture} from './api.js';
+import {getPictures} from './api.js';
 import {showAlertDialog} from './dialogs.js';
 
-getPicture()
+getPictures()
   .then((data) => {
     renderPicturesGallery(data);
   })

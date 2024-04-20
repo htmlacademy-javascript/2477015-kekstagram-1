@@ -25,6 +25,6 @@ const load = (route, errorText, method = Method.GET, body = null) =>
       throw new Error(errorText ?? err.message);
     });
 
-export const getPicture = () => load(Route.GET_DATA, ErrorText.GET_DATA);
+export const getPictures = () => load(Route.GET_DATA, ErrorText.GET_DATA);
 
 export const sendPicture = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);

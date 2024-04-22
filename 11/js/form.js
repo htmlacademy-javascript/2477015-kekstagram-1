@@ -12,6 +12,12 @@ const imgUploadInput = imgUploadForm.querySelector('.img-upload__input');
 const textHashtags = imgUploadForm.querySelector('.text__hashtags');
 const textDescription = imgUploadForm.querySelector('.text__description');
 const submitButton = imgUploadForm.querySelector('.img-upload__submit');
+const successTemplate = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+const errorTemplate = document.querySelector('#error')
+  .content
+  .querySelector('.error');
 
 const SubmitButtonText = {
   DEFAULT: 'Опубликовать',
@@ -67,16 +73,17 @@ imgUploadInput.addEventListener('change', onInputChange);
 
 const setUserFormSubmit = (evt) => {
   evt.preventDefault();
+
   if (isFormValid) {
     switchSubmitButton(true);
     sendPicture(new FormData(evt.target))
       .then(() => {
         closeForm();
-        showDialog('success');
+        showDialog(successTemplate);
       })
       .catch(() => {
         switchSubmitButton(false);
-        showDialog('error');
+        showDialog(errorTemplate);
       });
   }
 };

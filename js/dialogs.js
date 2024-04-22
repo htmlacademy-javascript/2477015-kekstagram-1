@@ -31,30 +31,17 @@ function onDocumentKeydown (evt) {
   }
 }
 
-const checkEvtTargetClassList = (evt, classList) => {
-  const currentClassList = evt.target.classList;
-
-  if (currentClassList.contains(`${classList}__inner`)) {
+const onDialogClick = (evt) => {
+  if (!evt.target.hasAttribute('data-close-dialog')) {
     return;
   }
 
   removeDialog();
 };
 
-const onCloseButtonClick = () => {
-  removeDialog();
-};
-
-export const showDialog = (classList) => {
-  currentDialog = document.querySelector(`#${classList}`)
-    .cloneNode(true)
-    .content
-    .querySelector(`.${classList}`);
-  document.body.append(currentDialog);
-  currentDialog.classList.remove('hidden');
-  const dialogCloseButton = currentDialog.querySelector(`.${classList}__button`);
-
-  dialogCloseButton.addEventListener('click', onCloseButtonClick);
+export const showDialog = (template) => {
+  currentDialog = template.cloneNode(true);
   document.addEventListener('keydown', onDocumentKeydown, true);
-  currentDialog.addEventListener('click',(evt) => checkEvtTargetClassList (evt, classList));
+  currentDialog.addEventListener('click', onDialogClick);
+  document.body.append(currentDialog);
 };

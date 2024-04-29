@@ -82,8 +82,10 @@ const setUserFormSubmit = (evt) => {
         showDialog(successTemplate);
       })
       .catch(() => {
-        switchSubmitButton(false);
         showDialog(errorTemplate);
+      })
+      .finally (() => {
+        switchSubmitButton(false);
       });
   }
 };

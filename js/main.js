@@ -6,8 +6,7 @@ import './form.js';
 import './picture-scale.js';
 import './filters.js';
 //import './upload-picture.js';
-import {renderSortingPictures} from './picture-sort.js';
-//import {createGallery} from './data.js';
+import {initSorting} from './picture-sort.js';
 import {renderPicturesGallery} from './gallery.js';
 import {getPictures} from './api.js';
 import {showAlertDialog} from './dialogs.js';
@@ -15,7 +14,7 @@ import {showAlertDialog} from './dialogs.js';
 getPictures()
   .then((data) => {
     renderPicturesGallery(data);
-    renderSortingPictures(data);
+    initSorting(data);
   })
   .catch((error) => {
     showAlertDialog(error.message);

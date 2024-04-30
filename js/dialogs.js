@@ -1,4 +1,4 @@
-import {isEscapeKey} from './util.js';
+import {isEscapeKey} from './utils.js';
 
 const ALERT_SHOW_TIME = 3000;
 
@@ -20,6 +20,7 @@ let currentDialog;
 
 const removeDialog = () => {
   currentDialog.remove();
+  currentDialog = null;
   document.removeEventListener('keydown', onDocumentKeydown, true);
 };
 

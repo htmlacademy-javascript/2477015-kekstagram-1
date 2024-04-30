@@ -1,4 +1,4 @@
-import {isEscapeKey} from './util.js';
+import {isEscapeKey} from './utils.js';
 import {isFormValid, resetValidation} from './form-validate.js';
 import {resetScalePicture} from './picture-scale.js';
 import {resetPictureEffect} from './filters.js';

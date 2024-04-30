@@ -1,4 +1,4 @@
-import {useDebounce} from './util.js';
+import {debounce} from './utils.js';
 import {renderGallery} from './render-gallery.js';
 
 const MAX_PICTURE_COUNT = 10;
@@ -6,58 +6,56 @@ const MAX_PICTURE_COUNT = 10;
 const sortingSection = document.querySelector('.img-filters');
 const sortingForm = sortingSection.querySelector('.img-filters__form');
 const sortingButtons = sortingForm.querySelectorAll('.img-filters__button');
-const activeButton = sortingForm.querySelector('.img-filters__button--active');
+const picturesContainer = document.querySelector('.pictures');
+const imgUpload = picturesContainer.querySelector('.img-upload');
 
-const removePictures = () => {
-  const picturesAll = document.querySelectorAll('.picture');
-  picturesAll.forEach((pictures) => pictures.remove());
+const SORTING = {
+  DEFAULT: 'filter-default',
+  RANDOM: 'filter-random',
+  DISCUSSED: 'filter-discussed'
 };
 
-const sortingSwitch = () => {
-  sortingButtons.forEach((button) => {
-    button.addEventListener('click', (evt) => {
-      activeButton.classList.remove('img-filters__button--active');
-      evt.target.classList.add('img-filters__button--active');
-    });
-  });
+const removePictures = () => {
+  picturesContainer.innerHTML = '';
+  picturesContainer.append(imgUpload);
 };
 
 const sortByComments = (pictureA, pictureB) =>
   pictureB.comments.length - pictureA.comments.length;
 
-const sortingPictures = (pictures) => {
-  const currentPictures = pictures.slice();
+const sortByRandom = () => Math.random() - 0.5;
 
-  const onSortingButtonClick = (evt) => {
-    if (evt.target.matches('#filter-default')) {
+const sortingPictures = (data) => {
+  switch (data) {
+    case SORTING.DEFAULT:
+      return (pictures) => [...pictures];
+    case SORTING.RANDOM:
+      return (pictures) => [...pictures].sort(sortByRandom).slice(0, MAX_PICTURE_COUNT);
+    case SORTING.DISCUSSED:
+      return (pictures) => [...pictures].sort(sortByComments);
+  }
+};
+
+const sortingSwitch = (data) => {
+  sortingSection.addEventListener('click', debounce(
+    (evt) => {
+      if (!evt.target.classList.contains('img-filters__button') || evt.target.classList.contains('img-filters__button--active')) {
+        return;
+      }
+
+      sortingButtons.forEach((button) => button.classList.remove('img-filters__button--active'));
+      evt.target.classList.add('img-filters__button--active');
+
+      const activesortingPictures = sortingPictures(evt.target.id);
+      const currentPictures = activesortingPictures(data);
+
       removePictures();
       renderGallery(currentPictures);
     }
-
-    if (evt.target.matches('#filter-random')) {
-      removePictures();
-      const randomUserPhotos = currentPictures
-        .slice()
-        .sort(() => Math.random() - 0.5)
-        .slice(0, MAX_PICTURE_COUNT);
-      renderGallery(randomUserPhotos);
-    }
-
-    if (evt.target.matches('#filter-discussed')) {
-      removePictures();
-      const discussedPhotos = currentPictures
-        .slice()
-        .sort(sortByComments);
-      renderGallery(discussedPhotos);
-    }
-  };
-
-  sortingForm.addEventListener('click', useDebounce(onSortingButtonClick));
+  ));
 };
 
-
-export const renderSortingPictures = (data) => {
+export const initSorting = (data) => {
   sortingSection.classList.remove('img-filters--inactive');
-  sortingSwitch();
-  sortingPictures(data);
+  sortingSwitch(data);
 };

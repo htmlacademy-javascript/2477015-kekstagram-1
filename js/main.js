@@ -1,4 +1,3 @@
-import './functions.js';
 import './big-picture.js';
 import './render-gallery.js';
 import './form-validate.js';

@@ -1,7 +1,7 @@
 const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
-const picturesContainer = document.querySelector('.pictures');
+const picturesContainer = document.querySelector('.pictures-container');
 
 const createPicture = (picture) => {
   const clonePicture = pictureTemplate.cloneNode(true);
@@ -16,6 +16,7 @@ const createPicture = (picture) => {
 };
 
 export const renderGallery = (pictures) => {
+  picturesContainer.innerHTML = '';
   const picturesFragment = document.createDocumentFragment();
 
   pictures.forEach((picture) => {

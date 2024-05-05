@@ -1,11 +1,13 @@
 import {initSorting} from './picture-sort.js';
-import {renderPicturesGallery} from './gallery.js';
+import {renderGallery} from './gallery.js';
 import {getPictures} from './api.js';
 import {showAlertDialog} from './dialogs.js';
+import './form.js';
+import './upload-picture.js';
 
 getPictures()
   .then((data) => {
-    renderPicturesGallery(data);
+    renderGallery(data);
     initSorting(data);
   })
   .catch((error) => {

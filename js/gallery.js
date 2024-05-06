@@ -5,6 +5,8 @@ const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
+let pictures = [];
+
 const createPicture = (picture) => {
   const clonePicture = pictureTemplate.cloneNode(true);
 
@@ -17,31 +19,36 @@ const createPicture = (picture) => {
   return clonePicture;
 };
 
-export const renderGallery = (pictures) => {
+export const renderGallery = (data) => {
   picturesContainer.innerHTML = '';
   const picturesFragment = document.createDocumentFragment();
 
-  pictures.forEach((picture) => {
+  data.forEach((picture) => {
     picturesFragment.append(createPicture(picture));
   });
 
   picturesContainer.append(picturesFragment);
 };
 
-export const renderPicturesGallery = (pictures) => {
-  picturesContainer.addEventListener('click', (evt) => {
-    const picture = evt.target.closest('[data-picture-id]');
+picturesContainer.addEventListener('click', (evt) => {
+  const picture = evt.target.closest('[data-picture-id]');
 
-    if (!picture) {
-      return;
-    }
+  if (!picture) {
+    return;
+  }
 
-    evt.preventDefault();
+  evt.preventDefault();
 
-    if (picture.id !== undefined) {
-      const photo = pictures
-        .find((elem) => elem.id === Number(picture.dataset.pictureId));
-      showBigPicture(photo);
-    }
-  });
+  if (picture.id !== undefined) {
+    const photo = pictures
+      .find((elem) => elem.id === Number(picture.dataset.pictureId));
+    showBigPicture(photo);
+  }
+});
+
+export const initGallery = (data) => {
+  pictures = data;
+  renderGallery(pictures);
 };
+
+export const getPhotos = () => [...pictures];

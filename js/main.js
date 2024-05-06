@@ -1,14 +1,14 @@
 import {initSorting} from './picture-sort.js';
-import {renderGallery} from './gallery.js';
-import {getPictures} from './api.js';
 import {showAlertDialog} from './dialogs.js';
-import './form.js';
+import {initGallery} from './gallery.js';
+import {getPictures} from './api.js';
 import './upload-picture.js';
+import './form.js';
 
 getPictures()
   .then((data) => {
-    renderGallery(data);
-    initSorting(data);
+    initGallery(data);
+    initSorting();
   })
   .catch((error) => {
     showAlertDialog(error.message);

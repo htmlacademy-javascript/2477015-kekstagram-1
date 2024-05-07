@@ -37,10 +37,6 @@ picturesContainer.addEventListener('click', (evt) => {
     return;
   }
 
-  if (picture.id === undefined) {
-    return;
-  }
-
   evt.preventDefault();
 
   const photo = pictures

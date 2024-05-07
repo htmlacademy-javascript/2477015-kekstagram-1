@@ -5,6 +5,8 @@ import {resetPictureEffect} from './filters.js';
 import {sendPicture} from './api.js';
 import {showDialog} from './dialogs.js';
 
+const PICTURE_FORMAT = ['.gif', '.jpg', '.jpeg', '.png'];
+
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
 const imgUploadForm = document.querySelector('.img-upload__form');
@@ -18,6 +20,8 @@ const successTemplate = document.querySelector('#success')
 const errorTemplate = document.querySelector('#error')
   .content
   .querySelector('.error');
+const uploadPreview = document.querySelector('.img-upload__preview img');
+const uploadFile = document.querySelector('#upload-file');
 
 const SubmitButtonText = {
   DEFAULT: 'Опубликовать',
@@ -68,9 +72,6 @@ function onFormKeydown (evt) {
   }
 }
 
-imgUploadCancel.addEventListener('click', onCancelButtonClick);
-imgUploadInput.addEventListener('change', onInputChange);
-
 const setUserFormSubmit = (evt) => {
   evt.preventDefault();
 
@@ -90,4 +91,18 @@ const setUserFormSubmit = (evt) => {
   }
 };
 
+const onUploadPictureChange = () => {
+  const file = uploadFile.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = PICTURE_FORMAT.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    uploadPreview.src = URL.createObjectURL(file);
+  }
+};
+
+imgUploadCancel.addEventListener('click', onCancelButtonClick);
+imgUploadInput.addEventListener('change', onInputChange);
 imgUploadForm.addEventListener('submit', setUserFormSubmit);
+uploadFile.addEventListener('change', onUploadPictureChange);

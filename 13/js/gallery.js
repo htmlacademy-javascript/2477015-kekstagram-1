@@ -8,15 +8,15 @@ const pictureTemplate = document.querySelector('#picture')
 let pictures = [];
 
 const createPicture = (picture) => {
-  const clonePicture = pictureTemplate.cloneNode(true);
+  const pictureClone = pictureTemplate.cloneNode(true);
 
-  clonePicture.querySelector('.picture__likes').textContent = picture.likes;
-  clonePicture.querySelector('.picture__comments').textContent = picture.comments.length;
-  clonePicture.querySelector('.picture__img').src = picture.url;
-  clonePicture.querySelector('.picture__img').alt = picture.description;
-  clonePicture.dataset.pictureId = picture.id;
+  pictureClone.querySelector('.picture__likes').textContent = picture.likes;
+  pictureClone.querySelector('.picture__comments').textContent = picture.comments.length;
+  pictureClone.querySelector('.picture__img').src = picture.url;
+  pictureClone.querySelector('.picture__img').alt = picture.description;
+  pictureClone.dataset.pictureId = picture.id;
 
-  return clonePicture;
+  return pictureClone;
 };
 
 export const renderGallery = (data) => {
@@ -37,13 +37,20 @@ picturesContainer.addEventListener('click', (evt) => {
     return;
   }
 
+  if (picture.id === undefined) {
+    return;
+  }
+
   evt.preventDefault();
 
-  if (picture.id !== undefined) {
-    const photo = pictures
-      .find((elem) => elem.id === Number(picture.dataset.pictureId));
-    showBigPicture(photo);
+  const photo = pictures
+    .find((elem) => elem.id === Number(picture.dataset.pictureId));
+
+  if (!photo) {
+    return;
   }
+
+  showBigPicture(photo);
 });
 
 export const initGallery = (data) => {

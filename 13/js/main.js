@@ -2,7 +2,6 @@ import {initSorting} from './picture-sort.js';
 import {showAlertDialog} from './dialogs.js';
 import {initGallery} from './gallery.js';
 import {getPictures} from './api.js';
-import './upload-picture.js';
 import './form.js';
 
 getPictures()

@@ -31,7 +31,7 @@ const sortPicturesByType = (sortingType) => {
 };
 
 const onSortingClick = debounce((evt) => {
-  if (!evt.target.closest('.img-filters__button: not(.img-filters__button--active)')) {
+  if (!evt.target.closest('.img-filters__button:not(.img-filters__button--active)')) {
     return;
   }
 
